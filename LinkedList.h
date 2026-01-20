@@ -20,7 +20,7 @@ public:
         head = newNode;
     }
 
-    // Ismein aur functions (remove, find) hum Day 3 par add karenge
+    
 };
 
 #endif
