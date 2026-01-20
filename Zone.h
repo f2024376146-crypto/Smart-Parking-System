@@ -22,6 +22,17 @@ public:
     void addSlot(int id) {
         slots.add(ParkingSlot(id, zoneID));
     }
+    void displayZoneStatus() {
+    std::cout << "\n--- Zone: " << zoneName << " Status ---" << std::endl;
+    Node<ParkingSlot>* temp = slots.head;
+    while (temp != nullptr) {
+        std::cout << "Slot ID: " << temp->data.slotID << " | Status: ";
+        if (temp->data.status == EMPTY) std::cout << "Available";
+        else std::cout << "Occupied";
+        std::cout << std::endl;
+        temp = temp->next;
+    }
+}
 
     
 };
