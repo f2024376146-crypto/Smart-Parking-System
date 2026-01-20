@@ -12,7 +12,7 @@ public:
     std::string zoneName;
     LinkedList<ParkingSlot> slots;
 
-    // Default Constructor
+    // Default Constructo
     Zone() : zoneID(0), zoneName("") {}
 
     // Parameterized Constructor
@@ -23,7 +23,7 @@ public:
         slots.add(ParkingSlot(id, zoneID));
     }
 
-    // --- Aapki partner yahan se apna display function likhengi ---
+    
 };
 
 #endif
