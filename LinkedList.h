@@ -19,6 +19,43 @@ public:
         newNode->next = head;
         head = newNode;
     }
+    
+    Node<T>* search(int id) {
+        Node<T>* temp = head;
+        while (temp != nullptr) {
+            if (temp->data.slotID == id) {
+                return temp;
+            }
+            temp = temp->next;
+        }
+        return nullptr;
+    }
+
+    
+    void remove(int id) {
+        if (head == nullptr) return;
+
+        
+        if (head->data.slotID == id) {
+            Node<T>* temp = head;
+            head = head->next;
+            delete temp;
+            return;
+        }
+
+        Node<T>* current = head;
+        Node<T>* previous = nullptr;
+
+        while (current != nullptr && current->data.slotID != id) {
+            previous = current;
+            current = current->next;
+        }
+
+        if (current == nullptr) return; 
+
+        previous->next = current->next;
+        delete current;
+    }
 
     
 };
