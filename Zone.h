@@ -1,8 +1,8 @@
 #ifndef ZONE_H
 #define ZONE_H
 
-#include <string>
 #include <iostream>
+#include <string>
 #include "LinkedList.h"
 #include "ParkingSlot.h"
 
@@ -12,29 +12,31 @@ public:
     std::string zoneName;
     LinkedList<ParkingSlot> slots;
 
-    // Default Constructo
-    Zone() : zoneID(0), zoneName("") {}
-
-    // Parameterized Constructor
     Zone(int id, std::string name) : zoneID(id), zoneName(name) {}
 
-    // Function to add a slot to this specific zone
     void addSlot(int id) {
         slots.add(ParkingSlot(id, zoneID));
     }
-    void displayZoneStatus() {
-    std::cout << "\n--- Zone: " << zoneName << " Status ---" << std::endl;
-    Node<ParkingSlot>* temp = slots.head;
-    while (temp != nullptr) {
-        std::cout << "Slot ID: " << temp->data.slotID << " | Status: ";
-        if (temp->data.status == EMPTY) std::cout << "Available";
-        else std::cout << "Occupied";
-        std::cout << std::endl;
-        temp = temp->next;
+
+    void removeSlot(int id) {
+        slots.remove(id);
+        std::cout << "Action: Slot " << id << " has been removed.\n";
     }
-}
 
-    
+    void findSlot(int id) {
+        Node<ParkingSlot>* res = slots.search(id);
+        if (res) std::cout << "Result: Slot " << id << " is FOUND in " << zoneName << "\n";
+        else std::cout << "Result: Slot " << id << " not found!\n";
+    }
+
+    void displayZoneStatus() {
+        std::cout << "\n--- Parking Status: " << zoneName << " ---" << std::endl;
+        Node<ParkingSlot>* temp = slots.head;
+        if (!temp) std::cout << "No slots created yet." << std::endl;
+        while (temp) {
+            std::cout << "Slot ID: " << temp->data.slotID << " | Status: Available" << std::endl;
+            temp = temp->next;
+        }
+    }
 };
-
 #endif
