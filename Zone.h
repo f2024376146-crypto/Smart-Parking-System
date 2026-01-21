@@ -30,13 +30,21 @@ public:
     }
 
     void displayZoneStatus() {
-        std::cout << "\n--- Parking Status: " << zoneName << " ---" << std::endl;
-        Node<ParkingSlot>* temp = slots.head;
-        if (!temp) std::cout << "No slots created yet." << std::endl;
-        while (temp) {
-            std::cout << "Slot ID: " << temp->data.slotID << " | Status: Available" << std::endl;
-            temp = temp->next;
+    std::cout << "\n--- Parking Status: " << zoneName << " ---" << std::endl;
+    Node<ParkingSlot>* temp = slots.head;
+    if (!temp) std::cout << "No slots created yet." << std::endl;
+    while (temp) {
+        std::cout << "Slot ID: " << temp->data.slotID;
+        if (temp->data.status == EMPTY) {
+            std::cout << " | Status: [EMPTY]";
+        } else {
+            std::cout << " | Status: [OCCUPIED] | Vehicle: " << temp->data.vehicle.plateNumber 
+                      << " (" << temp->data.vehicle.vehicleType << ")";
         }
+        std::cout << std::endl;
+        temp = temp->next;
     }
+}
+    
 };
 #endif

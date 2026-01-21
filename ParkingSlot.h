@@ -3,16 +3,26 @@
 
 #include <string>
 
-enum SlotStatus { EMPTY, OCCUPIED, RESERVED };
+// Detail of Vehicle
+struct Vehicle {
+    std::string plateNumber;
+    std::string vehicleType; 
+};
 
-class ParkingSlot {
-public:
+enum SlotStatus { EMPTY, OCCUPIED };
+
+// details of Parking Slot
+struct ParkingSlot {
     int slotID;
     int zoneID;
     SlotStatus status;
+    Vehicle vehicle;  
 
-    ParkingSlot() : slotID(0), zoneID(0), status(EMPTY) {}
-    ParkingSlot(int id, int zID) : slotID(id), zoneID(zID), status(EMPTY) {}
+
+    ParkingSlot(int id, int zID) : slotID(id), zoneID(zID), status(EMPTY) {
+        vehicle.plateNumber = "N/A";
+        vehicle.vehicleType = "None";
+    }
 };
 
 #endif
