@@ -7,10 +7,11 @@
 class ParkingArea {
 public:
     int areaID;
-    std::vector<ParkingSlot> slots; 
+    std::vector<ParkingSlot> slots;
     
     ParkingArea(int id, int numSlots);
     bool hasEmptySlot();
 };
 
 #endif
+

@@ -1,12 +1,13 @@
 #ifndef ALLOCATIONENGINE_H
 #define ALLOCATIONENGINE_H
+
 #include "Zone.h"
+#include "ParkingRequest.h"
 
 class AllocationEngine {
 public:
-    Zone* zonesHead;
-    AllocationEngine();
-    void addZone(Zone* z);
-    ParkingSlot* allocateSlot(int prefID, std::string vID);
+    
+    ParkingSlot* allocateSlot(ParkingRequest& request, std::vector<Zone>& allZones);
 };
+
 #endif
