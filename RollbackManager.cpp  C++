@@ -1,0 +1,23 @@
+#include "RollbackManager.h"
+#include <iostream>
+
+RollbackManager::RollbackManager() : top(nullptr) {}
+
+void RollbackManager::pushAction(ParkingSlot* slot) {
+    HistoryNode* newNode = new HistoryNode();
+    newNode->slotPtr = slot;
+    newNode->next = top;
+    top = newNode;
+}
+
+void RollbackManager::undoLastAction() {
+    if (!top) {
+        std::cout << "Nothing to undo!\n";
+        return;
+    }
+    HistoryNode* temp = top;
+    top = top->next;
+    temp->slotPtr->state = RELEASED;
+    std::cout << "Rollback Successful: Slot " << temp->slotPtr->slotID << " is now free.\n";
+    delete temp;
+}
