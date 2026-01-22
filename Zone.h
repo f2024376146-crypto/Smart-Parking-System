@@ -2,16 +2,30 @@
 #define ZONE_H
 
 #include "ParkingArea.h"
-#include <vector>
-#include <string>
 
-class Zone {
+struct AreaNode
+{
+    ParkingArea area;
+    AreaNode* next;
+};
+
+class Zone
+{
+private:
+    int zoneId;
+    AreaNode* head;
+    int* adjacentZones;
+    int adjCount;
+
 public:
-    int zoneID;
-    std::string zoneName;
-    std::vector<ParkingArea> areas; 
+    Zone();
+    Zone(int id);
 
-    Zone(int id, std::string name, int numAreas, int slotsPerArea);
+    void addParkingArea(ParkingArea area);
+    ParkingSlot* findAvailableSlot();
+
+    void setAdjacentZones(int* zones, int count);
+    int getZoneId() const;
 };
 
 #endif
