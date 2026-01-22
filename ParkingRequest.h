@@ -1,17 +1,33 @@
-#ifndef PARKINGREQUEST_H
-#define PARKINGREQUEST_H
+#ifndef PARKING_REQUEST_H
+#define PARKING_REQUEST_H
 
-#include <string>
-#include "ParkingSlot.h"
+enum RequestState
+{
+    REQUESTED,
+    ALLOCATED,
+    OCCUPIED,
+    RELEASED,
+    CANCELLED
+};
 
-struct ParkingRequest {
-    std::string vehicleID;
-    int requestedZone;
-    double requestTime; 
-    
-    SlotStatus currentStatus;
+class ParkingRequest
+{
+private:
+    int requestId;
+    int vehicleId;
+    int zoneId;
+    int requestTime;
+    RequestState state;
 
-    ParkingRequest(std::string vID = "", int rZone = -1, double rTime = 0.0);
+public:
+    ParkingRequest();
+    ParkingRequest(int rid, int vid, int zid, int time);
+
+    bool transition(RequestState newState);
+    RequestState getState() const;
+
+    int getRequestId() const;
+    int getZoneId() const;
 };
 
 #endif

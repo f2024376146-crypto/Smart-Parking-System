@@ -1,19 +1,26 @@
-#ifndef ROLLBACKMANAGER_H
-#define ROLLBACKMANAGER_H
-#include "ParkingSlot.h"
+#ifndef ROLLBACK_MANAGER_H
+#define ROLLBACK_MANAGER_H
 
-struct HistoryNode {
-    ParkingSlot* slotPtr;
-    HistoryNode* next;
+#include "ParkingSlot.h"
+#include "ParkingRequest.h"
+
+struct RollbackNode
+{
+    ParkingSlot* slot;
+    ParkingRequest* request;
+    RequestState prevState;
+    RollbackNode* next;
 };
 
-class RollbackManager {
+class RollbackManager
+{
 private:
-    HistoryNode* top;
+    RollbackNode* top;
 
 public:
     RollbackManager();
-    void pushAction(ParkingSlot* slot);
-    void undoLastAction();
+    void push(ParkingSlot* slot, ParkingRequest* req, RequestState prev);
+    void rollback(int k);
 };
+
 #endif

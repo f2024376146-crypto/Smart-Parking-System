@@ -1,17 +1,23 @@
-#ifndef PARKINGAREA_H
-#define PARKINGAREA_H
+#ifndef PARKING_SYSTEM_H
+#define PARKING_SYSTEM_H
 
-#include "ParkingSlot.h"
-#include <vector>
+#include "Zone.h"
+#include "AllocationEngine.h"
+#include "RollbackManager.h"
 
-class ParkingArea {
+class ParkingSystem
+{
+private:
+    Zone* zones;
+    int zoneCount;
+    AllocationEngine allocator;
+    RollbackManager rollbackMgr;
+
 public:
-    int areaID;
-    std::vector<ParkingSlot> slots;
-    
-    ParkingArea(int id, int numSlots);
-    bool hasEmptySlot();
+    ParkingSystem(Zone* zones, int count);
+    void processRequest(ParkingRequest& request);
+    void cancelRequest(ParkingRequest& request);
+    void rollbackLast(int k);
 };
 
 #endif
-

@@ -1,11 +1,18 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
-#include <string>
 
-struct Vehicle {
-    std::string vehicleID;
+class Vehicle
+{
+private:
+    int vehicleId;
     int preferredZone;
 
-    Vehicle(std::string id = "N/A", int pZone = -1);
+public:
+    Vehicle();
+    Vehicle(int id, int zone);
+
+    int getVehicleId() const;
+    int getPreferredZone() const;
 };
+
 #endif

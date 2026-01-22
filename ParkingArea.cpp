@@ -1,19 +1,39 @@
 #include "ParkingArea.h"
 
-ParkingArea::ParkingArea(int id) : areaID(id), slotsHead(nullptr), next(nullptr) {}
-
-void ParkingArea::addSlot(int sID, int zID) {
-    ParkingSlot* newSlot = new ParkingSlot(sID, zID);
-    newSlot->next = slotsHead;
-    slotsHead = newSlot;
+ParkingArea::ParkingArea()
+{
+    slots = nullptr;
+    slotCount = 0;
 }
 
-ParkingSlot* ParkingArea::findAvailableSlot() {
-    ParkingSlot* temp = slotsHead;
-    while (temp) {
-        
-        if (temp->state == RELEASED || temp->state == CANCELLED) return temp;
-        temp = temp->next;
-    }
+ParkingArea::ParkingArea(int zoneId, int count)
+{
+    slotCount = count;
+    slots = new ParkingSlot[count];
+
+    for (int i = 0; i < count; i++)
+        slots[i] = ParkingSlot(i, zoneId);
+}
+
+ParkingSlot* ParkingArea::getFirstFreeSlot()
+{
+    for (int i = 0; i < slotCount; i++)
+        if (slots[i].isFree())
+            return &slots[i];
+
     return nullptr;
+}
+
+int ParkingArea::getTotalSlots() const
+{
+    return slotCount;
+}
+
+int ParkingArea::getFreeSlotCount() const
+{
+    int free = 0;
+    for (int i = 0; i < slotCount; i++)
+        if (slots[i].isFree())
+            free++;
+    return free;
 }

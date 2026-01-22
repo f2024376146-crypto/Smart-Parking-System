@@ -1,16 +1,21 @@
-#ifndef PARKINGAREA_H
-#define PARKINGAREA_H
+#ifndef PARKING_AREA_H
+#define PARKING_AREA_H
 
 #include "ParkingSlot.h"
-#include <vector>
 
-class ParkingArea {
+class ParkingArea
+{
+private:
+    ParkingSlot* slots;
+    int slotCount;
+
 public:
-    int areaID;
-    std::vector<ParkingSlot> slots; 
-    
-    ParkingArea(int id, int numSlots);
-    bool hasEmptySlot();
+    ParkingArea();
+    ParkingArea(int zoneId, int count);
+
+    ParkingSlot* getFirstFreeSlot();
+    int getTotalSlots() const;
+    int getFreeSlotCount() const;
 };
 
 #endif

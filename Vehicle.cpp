@@ -1,3 +1,23 @@
 #include "Vehicle.h"
 
-Vehicle::Vehicle(std::string id, int pZone) : vehicleID(id), preferredZone(pZone) {}
+Vehicle::Vehicle()
+{
+    vehicleId = -1;
+    preferredZone = -1;
+}
+
+Vehicle::Vehicle(int id, int zone)
+{
+    vehicleId = id;
+    preferredZone = zone;
+}
+
+int Vehicle::getVehicleId() const
+{
+    return vehicleId;
+}
+
+int Vehicle::getPreferredZone() const
+{
+    return preferredZone;
+}
