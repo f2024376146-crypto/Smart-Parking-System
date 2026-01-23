@@ -1,21 +1,31 @@
-#ifndef PARKING_AREA_H
-#define PARKING_AREA_H
+#ifndef PARKINGAREA_H
+#define PARKINGAREA_H
 
 #include "ParkingSlot.h"
 
-class ParkingArea
-{
+class ParkingArea {
 private:
     ParkingSlot* slots;
-    int slotCount;
-
+    int count;
+    int areaId; 
 public:
-    ParkingArea();
-    ParkingArea(int zoneId, int count);
+    
+    ParkingArea(int zoneId, int c);
 
+    
+    ~ParkingArea();
+
+    
+    ParkingArea(const ParkingArea& other) = delete;
+    ParkingArea& operator=(const ParkingArea& other) = delete;
+
+    
     ParkingSlot* getFirstFreeSlot();
-    int getTotalSlots() const;
     int getFreeSlotCount() const;
+    int getTotalSlots() const;
+
+
+    int getCount() const { return count; }
 };
 
 #endif

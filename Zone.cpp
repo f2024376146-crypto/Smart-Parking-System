@@ -1,47 +1,52 @@
 #include "Zone.h"
+#include <iostream>
 
-Zone::Zone()
-{
-    zoneId = -1;
-    head = nullptr;
-    adjacentZones = nullptr;
-    adjCount = 0;
-}
+using namespace std;
 
-Zone::Zone(int id)
-{
-    zoneId = id;
-    head = nullptr;
-    adjacentZones = nullptr;
-    adjCount = 0;
-}
+Zone::Zone(int id) : zoneId(id), head(nullptr), adjacentZones(nullptr), adjCount(0) {}
 
-void Zone::addParkingArea(ParkingArea area)
-{
-    AreaNode* node = new AreaNode{area, head};
-    head = node;
-}
 
-ParkingSlot* Zone::findAvailableSlot()
-{
-    AreaNode* temp = head;
-    while (temp)
-    {
-        ParkingSlot* slot = temp->area.getFirstAvailableSlot();
-        if (slot)
-            return slot;
-        temp = temp->next;
+Zone::~Zone() {
+    /
+    AreaNode* current = head;
+    while (current != nullptr) {
+        AreaNode* nextNode = current->next;
+        
+        delete current; 
+        current = nextNode;
     }
-    return nullptr;
+
+    
+    if (adjacentZones != nullptr) {
+        delete[] adjacentZones;
+        adjacentZones = nullptr;
+    }
 }
 
-void Zone::setAdjacentZones(int* zones, int count)
-{
-    adjacentZones = zones;
+void Zone::addParkingArea(ParkingArea* area) {
+    AreaNode* newNode = new AreaNode;
+    newNode->area = area;
+    newNode->next = head;
+    head = newNode;
+}
+
+void Zone::setAdjacentZones(int* zones, int count) {
     adjCount = count;
+    adjacentZones = new int[count];
+    for (int i = 0; i < count; i++) {
+        adjacentZones[i] = zones[i];
+    }
 }
 
-int Zone::getZoneId() const
-{
-    return zoneId;
+
+ParkingSlot* Zone::findSlotInZone() {
+    AreaNode* current = head;
+    while (current != nullptr) {
+        ParkingSlot* slot = current->area->getFirstFreeSlot();
+        if (slot != nullptr) {
+            return slot;
+        }
+        current = current->next;
+    }
+    return nullptr; 
 }

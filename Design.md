@@ -4,7 +4,7 @@ This project implements an in-memory Smart Parking Allocation & Zone Management 
 
 The project is designed to strengthen understanding of core data structures such as arrays, linked lists, stacks, queues, and state machines while modeling a real-world urban resource allocation problem.
 
-2# . # # Zone and Slot Representation
+2  Zone and Slot Representation
 2.1 City and Zones
 
 The city is represented as an array of Zone objects.
@@ -29,7 +29,7 @@ Each parking area manages its own slots.
 
 This allows flexible expansion and efficient traversal without using STL containers.
 
-2.3 Parking Slots
+2.3 **Parking Slots**
 
 Each ParkingArea contains an array of ParkingSlot objects.
 
@@ -43,7 +43,7 @@ Availability status (free / occupied)
 
 Slots are accessed using a first-available strategy, which keeps allocation logic simple and efficient.
 
-3.# # #  Vehicle and Parking Request Management
+3. **Vehicle and Parking Request Management**
 3.1 Vehicle Representation
 
 Each vehicle is represented by a Vehicle object.
@@ -74,7 +74,7 @@ Current state
 
 Requests are processed in FIFO order, conceptually using a queue.
 
-4. # Parking Request Lifecycle State Machine
+4.  # Parking Request Lifecycle State Machine
 
 A strict state machine is implemented using an enumeration.
 
@@ -98,7 +98,7 @@ Any transition not listed above is explicitly rejected.
 
 This ensures system correctness and prevents inconsistent states.
 
-5# .#  Allocation Strategy
+5#   **Allocation Strategy**
 
 The allocation logic is implemented in the AllocationEngine and follows these rules:
 
@@ -118,7 +118,7 @@ Cross-zone allocation incurs a penalty (tracked logically).
 
 No STL maps or graphs are used in allocation logic, fulfilling implementation constraints.
 
-6.# #  Cancellation and Rollback Design
+6.  #  Cancellation and Rollback Design
 6.1 Rollback Motivation
 
 When a request is cancelled or rollback is triggered, the system must:
@@ -171,7 +171,7 @@ Average parking duration
 
 Analytics remain consistent even after cancellation and rollback operations.
 
-8.#  # Testing Strategy
+8.  #  Testing Strategy
 
 A minimum of 10 test cases were implemented in main.cpp, covering:
 
@@ -225,6 +225,6 @@ Request history uses O(n) space
 
 Overall space complexity is O(n + ZAS).
 
-10.#  # Conclusion
+10. # Conclusion
 
 This project demonstrates a complete and modular implementation of a smart parking management system using fundamental data structures. By enforcing strict state transitions, supporting rollback, and providing analytics, the system models real-world constraints while adhering to academic and implementation requirements.

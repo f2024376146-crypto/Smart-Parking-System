@@ -1,26 +1,32 @@
-#ifndef ROLLBACK_MANAGER_H
-#define ROLLBACK_MANAGER_H
+#ifndef ROLLBACKMANAGER_H
+#define ROLLBACKMANAGER_H
 
 #include "ParkingSlot.h"
 #include "ParkingRequest.h"
 
-struct RollbackNode
-{
+
+struct RollNode {
     ParkingSlot* slot;
-    ParkingRequest* request;
-    RequestState prevState;
-    RollbackNode* next;
+    ParkingRequest* req;
+    RequestState prevState; 
+    RollNode* next;
 };
 
-class RollbackManager
-{
+class RollbackManager {
 private:
-    RollbackNode* top;
+    RollNode* top; 
 
 public:
     RollbackManager();
-    void push(ParkingSlot* slot, ParkingRequest* req, RequestState prev);
+    ~RollbackManager(); 
+
+    
+    RollbackManager(const RollbackManager& other) = delete;
+    RollbackManager& operator=(const RollbackManager& other) = delete;
+
+    void push(ParkingSlot* s, ParkingRequest* r, RequestState p);
     void rollback(int k);
+    bool isEmpty() const { return top == nullptr; }
 };
 
 #endif

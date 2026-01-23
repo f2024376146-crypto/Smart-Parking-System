@@ -3,29 +3,35 @@
 
 #include "ParkingArea.h"
 
-struct AreaNode
-{
-    ParkingArea area;
+// Linked List Node for Parking Areas
+struct AreaNode {
+    ParkingArea* area;
     AreaNode* next;
 };
 
-class Zone
-{
+class Zone {
 private:
     int zoneId;
-    AreaNode* head;
-    int* adjacentZones;
+    AreaNode* head;         
+    int* adjacentZones;     
     int adjCount;
 
 public:
-    Zone();
     Zone(int id);
+    ~Zone();
 
-    void addParkingArea(ParkingArea area);
-    ParkingSlot* findAvailableSlot();
+    
+    Zone(const Zone& other) = delete;
+    Zone& operator=(const Zone& other) = delete;
 
+    void addParkingArea(ParkingArea* area);
     void setAdjacentZones(int* zones, int count);
-    int getZoneId() const;
+    
+    ParkingSlot* findSlotInZone();
+    
+    int getZoneId() const { return zoneId; }
+    int getAdjCount() const { return adjCount; }
+    int* getAdjacentZones() const { return adjacentZones; }
 };
 
 #endif
