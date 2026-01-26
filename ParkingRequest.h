@@ -26,7 +26,6 @@ public:
     bool transition(RequestState newState);
     RequestState getState() const;
 
-    int getRequestId() const;
     int getZoneId() const;
 };
 

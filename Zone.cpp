@@ -1,52 +1,33 @@
 #include "Zone.h"
-#include <iostream>
 
-using namespace std;
+Zone::Zone(int id) : zoneId(id), head(nullptr) {}
 
-Zone::Zone(int id) : zoneId(id), head(nullptr), adjacentZones(nullptr), adjCount(0) {}
-
-
-Zone::~Zone() {
-    /
+Zone::~Zone()
+{
     AreaNode* current = head;
-    while (current != nullptr) {
-        AreaNode* nextNode = current->next;
-        
-        delete current; 
-        current = nextNode;
-    }
-
-    
-    if (adjacentZones != nullptr) {
-        delete[] adjacentZones;
-        adjacentZones = nullptr;
+    while (current)
+    {
+        AreaNode* temp = current;
+        current = current->next;
+        delete temp;
     }
 }
 
-void Zone::addParkingArea(ParkingArea* area) {
-    AreaNode* newNode = new AreaNode;
-    newNode->area = area;
-    newNode->next = head;
-    head = newNode;
+void Zone::addParkingArea(ParkingArea* area)
+{
+    AreaNode* node = new AreaNode{area, head};
+    head = node;
 }
 
-void Zone::setAdjacentZones(int* zones, int count) {
-    adjCount = count;
-    adjacentZones = new int[count];
-    for (int i = 0; i < count; i++) {
-        adjacentZones[i] = zones[i];
-    }
-}
-
-
-ParkingSlot* Zone::findSlotInZone() {
+ParkingSlot* Zone::findSlotInZone()
+{
     AreaNode* current = head;
-    while (current != nullptr) {
+    while (current)
+    {
         ParkingSlot* slot = current->area->getFirstFreeSlot();
-        if (slot != nullptr) {
+        if (slot)
             return slot;
-        }
         current = current->next;
     }
-    return nullptr; 
+    return nullptr;
 }

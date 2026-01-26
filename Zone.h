@@ -3,7 +3,6 @@
 
 #include "ParkingArea.h"
 
-// Linked List Node for Parking Areas
 struct AreaNode {
     ParkingArea* area;
     AreaNode* next;
@@ -12,26 +11,19 @@ struct AreaNode {
 class Zone {
 private:
     int zoneId;
-    AreaNode* head;         
-    int* adjacentZones;     
-    int adjCount;
+    AreaNode* head;
 
 public:
     Zone(int id);
     ~Zone();
 
-    
-    Zone(const Zone& other) = delete;
-    Zone& operator=(const Zone& other) = delete;
+    Zone(const Zone&) = delete;
+    Zone& operator=(const Zone&) = delete;
 
     void addParkingArea(ParkingArea* area);
-    void setAdjacentZones(int* zones, int count);
-    
     ParkingSlot* findSlotInZone();
-    
+
     int getZoneId() const { return zoneId; }
-    int getAdjCount() const { return adjCount; }
-    int* getAdjacentZones() const { return adjacentZones; }
 };
 
 #endif

@@ -33,11 +33,6 @@ RequestState ParkingRequest::getState() const
     return state;
 }
 
-int ParkingRequest::getRequestId() const
-{
-    return requestId;
-}
-
 int ParkingRequest::getZoneId() const
 {
     return zoneId;
