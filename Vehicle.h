@@ -1,18 +1,10 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
-
-class Vehicle
-{
-private:
-    int vehicleId;
-    int preferredZone;
-
+#include "Enums.h"
+class Vehicle {
 public:
-    Vehicle();
-    Vehicle(int id, int zone);
-
-    int getVehicleId() const;
-    int getPreferredZone() const;
+    int vehicleID;
+    VehicleType type;
+    Vehicle(int id = -1, VehicleType t = CAR) : vehicleID(id), type(t) {}
 };
-
 #endif

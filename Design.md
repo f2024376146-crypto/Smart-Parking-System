@@ -1,230 +1,55 @@
-1. # Introduction
+**Smart Parking System - Design Documentation**
+1. Project Overview
 
-This project implements an in-memory Smart Parking Allocation & Zone Management System for a city divided into zones. The system manages parking requests, allocates parking slots based on availability and zone preferences, enforces a strict request lifecycle, supports cancellation with rollback, and provides usage analytics.
+This project is a Modular Parking Management System designed to handle real-time parking requests, slot allocations across multiple zones, and state transitions for vehicles. It utilizes a Linked List of areas within each zone and a State Machine to track request progress.
 
-The project is designed to strengthen understanding of core data structures such as arrays, linked lists, stacks, queues, and state machines while modeling a real-world urban resource allocation problem.
+2. System Architecture
 
-2  Zone and Slot Representation
-2.1 City and Zones
+The system is divided into several interconnected modules to ensure scalability and clarity:
 
-The city is represented as an array of Zone objects.
+Zone & Area Management: Each Zone contains a Linked List of AreaNode objects, where each node points to a ParkingArea containing 5 slots.
 
-Each Zone has:
+Allocation Engine: A static utility that finds the first available slot in a specified zone by traversing the Linked List.
 
-A unique zoneId
+State Machine: Tracks requests through five states: REQUESTED, ALLOCATED, OCCUPIED, RELEASED, and CANCELLED.
 
-A linked list of ParkingArea objects
+Rollback Manager: Uses a stack-based history to undo recent operations, ensuring data integrity.
 
-A custom adjacency structure for neighboring zones (array-based, no STL graphs)
+3. Data Structures & Complexity
 
-This design satisfies the requirement of zone-based city representation without routing graphs.
+ComponentImplementationTime ComplexityZone StorageLinked List of Areas O(N) where N is number of areas.Slot SearchLinear Search within Areas O(S) where S is total slots in a zone.Undo/RollbackStack (Array-based)O(1) per operation.Request HistoryStatic Array (Size 20)O(1) for lookup.
 
-2.2 Parking Areas
+4. Core Logic Implementation
 
-Each Zone contains multiple ParkingArea objects.
+The project strictly follows the logic defined in the source files:
 
-Parking areas are stored using a singly linked list.
+ParkingSystem.cpp: Manages the main flow, including the automated test suite and user interaction.
 
-Each parking area manages its own slots.
+Vehicle.cpp: Stores basic vehicle data and preferred zones.
 
-This allows flexible expansion and efficient traversal without using STL containers.
+ParkingSlot.cpp: Manages individual slot availability and ID mapping (e.g., Zone 1 slots start at ID 10).
 
-2.3 **Parking Slots**
+5. Verification: 10 Automated Test Cases
 
-Each ParkingArea contains an array of ParkingSlot objects.
+The system includes a suite of 10 automated tests (accessible via Menu Option 6) to verify all rules:
 
-Each slot stores:
+Standard Allocation: Successfully parks a vehicle in Zone 0 (Slot 0).
 
-Slot ID
+Boundary Allocation: Parks a vehicle in Zone 2 (Slot 20).
 
-Zone ID
+Invalid Zone Check: Rejects allocation for Zone IDs outside the 0-2 range.
 
-Availability status (free / occupied)
+Sequential Search: Confirms that slots are filled in order within the Linked List.
 
-Slots are accessed using a first-available strategy, which keeps allocation logic simple and efficient.
+Standard Release: Marks a slot as available and clears the state.
 
-3. **Vehicle and Parking Request Management**
-3.1 Vehicle Representation
+State Protection: Prevents double-releasing an already free slot.
 
-Each vehicle is represented by a Vehicle object.
+Rollback Logic: Reverts the last operation and restores previous data.
 
-Attributes:
+Invalid Index Handling: Prevents errors when releasing a non-existent request index.
 
-Vehicle ID
+Analytics Integrity: Displays correct counts for total transactions.
 
-Preferred zone
+Capacity Overflow: Confirms "No slots available" once all 5 slots in an area are full.
 
-Vehicles do not directly interact with slots; all allocation is handled by the system controller.
-
-3.2 Parking Requests
-
-Parking requests are represented by ParkingRequest objects.
-
-Each request contains:
-
-Request ID
-
-Vehicle ID
-
-Requested zone
-
-Request time
-
-Current state
-
-Requests are processed in FIFO order, conceptually using a queue.
-
-4.  # Parking Request Lifecycle State Machine
-
-A strict state machine is implemented using an enumeration.
-
-Valid States:
-REQUESTED
-ALLOCATED
-OCCUPIED
-RELEASED
-CANCELLED
-
-Allowed Transitions:
-REQUESTED → ALLOCATED
-REQUESTED → CANCELLED
-ALLOCATED → OCCUPIED
-ALLOCATED → CANCELLED
-OCCUPIED → RELEASED
-
-Invalid Transitions:
-
-Any transition not listed above is explicitly rejected.
-
-This ensures system correctness and prevents inconsistent states.
-
-5#   **Allocation Strategy**
-
-The allocation logic is implemented in the AllocationEngine and follows these rules:
-
-Same-zone preference
-
-The requested zone is searched first.
-
-First-available slot
-
-Slots are checked sequentially.
-
-Cross-zone allocation
-
-If the requested zone is full, other zones are checked.
-
-Cross-zone allocation incurs a penalty (tracked logically).
-
-No STL maps or graphs are used in allocation logic, fulfilling implementation constraints.
-
-6.  #  Cancellation and Rollback Design
-6.1 Rollback Motivation
-
-When a request is cancelled or rollback is triggered, the system must:
-
-Restore slot availability
-
-Restore request state
-
-Maintain analytics consistency
-
-6.2 Rollback Data Structure
-
-Rollback is implemented using a stack (linked list).
-
-Each rollback entry stores:
-
-Pointer to allocated slot
-
-Pointer to parking request
-
-Previous request state
-
-6.3 Rollback Operation
-
-When rollback of the last k operations is requested:
-
-Pop k entries from the stack
-
-Release the associated slot
-
-Restore the request’s previous state
-
-This design supports undoing multiple allocations safely and efficiently.
-
-7. # Analytics and History Tracking
-
-The system maintains a complete history of parking requests to support analytics.
-
-Supported Analytics:
-
-Total number of requests
-
-Cancelled vs completed requests
-
-Zone utilization rate
-
-Peak usage zones
-
-Average parking duration
-
-Analytics remain consistent even after cancellation and rollback operations.
-
-8.  #  Testing Strategy
-
-A minimum of 10 test cases were implemented in main.cpp, covering:
-
-Same-zone allocation
-
-Cross-zone allocation
-
-Allocation failure when all zones are full
-
-Valid lifecycle transitions
-
-Invalid state transition detection
-
-Cancellation from REQUESTED state
-
-Cancellation from ALLOCATED state
-
-Rollback of single allocation
-
-Rollback of multiple allocations
-
-System stability after rollback
-
-These tests ensure correctness, robustness, and compliance with project requirements.
-
-9. # Time and Space Complexity Analysis
-Time Complexity
-Operation	Complexity
-Slot allocation	O(Z × A × S)
-Request cancellation	O(1)
-Rollback (k operations)	O(k)
-Analytics queries	O(n)
-
-Where:
-
-Z = number of zones
-
-A = parking areas per zone
-
-S = slots per area
-
-n = total number of requests
-
-Space Complexity
-
-Zones, parking areas, and slots use linear space
-
-Rollback stack uses O(k) space
-
-Request history uses O(n) space
-
-Overall space complexity is O(n + ZAS).
-
-10. # Conclusion
-
-This project demonstrates a complete and modular implementation of a smart parking management system using fundamental data structures. By enforcing strict state transitions, supporting rollback, and providing analytics, the system models real-world constraints while adhering to academic and implementation requirements.

@@ -1,39 +1,21 @@
-#ifndef PARKING_SYSTEM_H
-#define PARKING_SYSTEM_H
-
+#ifndef PARKINGSYSTEM_H
+#define PARKINGSYSTEM_H
 #include "Zone.h"
-#include "AllocationEngine.h"
-#include "RollbackManager.h"
 #include "ParkingRequest.h"
+#include "RollbackManager.h"
 
-struct RequestNode {
-    ParkingRequest* req;
-    RequestNode* next;
-};
-
-class ParkingSystem
-{
-private:
-    Zone* zones;
-    int zoneCount;
-    AllocationEngine allocator;
-    RollbackManager rollbackMgr;
-
-    RequestNode* front;
-    RequestNode* rear;
-
-    int totalRequests;
-    int failedRequests;
-
+class ParkingSystem {
+    Zone* zones[3];
+    ParkingRequest requests[20];
+    int requestCount;
+    RollbackManager rb;
 public:
-    ParkingSystem(Zone* zones, int count);
-
-    void enqueue(ParkingRequest* req);
-    void processNext();
-    void processRequest(ParkingRequest& request);
-    void rollbackLast(int k);
-
-    void printAnalytics() const;
+    ParkingSystem();
+    ~ParkingSystem();
+    void allocate(int vID, int zID);
+    void release(int rIdx);
+    void rollback(int k);
+    void showAnalytics();
+    void runAutomatedTests(); 
 };
-
 #endif

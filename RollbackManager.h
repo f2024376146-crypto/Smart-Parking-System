@@ -1,32 +1,14 @@
 #ifndef ROLLBACKMANAGER_H
 #define ROLLBACKMANAGER_H
-
-#include "ParkingSlot.h"
-#include "ParkingRequest.h"
-
-
-struct RollNode {
-    ParkingSlot* slot;
-    ParkingRequest* req;
-    RequestState prevState; 
-    RollNode* next;
-};
-
+#include "Enums.h"
+struct RollbackAction { int reqIdx, sID, zID; RequestState pState; };
 class RollbackManager {
-private:
-    RollNode* top; 
-
+    RollbackAction history[100];
+    int top;
 public:
     RollbackManager();
-    ~RollbackManager(); 
-
-    
-    RollbackManager(const RollbackManager& other) = delete;
-    RollbackManager& operator=(const RollbackManager& other) = delete;
-
-    void push(ParkingSlot* s, ParkingRequest* r, RequestState p);
-    void rollback(int k);
-    bool isEmpty() const { return top == nullptr; }
+    void record(int r, int s, int z, RequestState st);
+    bool isEmpty();
+    RollbackAction pop();
 };
-
 #endif

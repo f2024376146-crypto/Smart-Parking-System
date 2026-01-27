@@ -1,12 +1,8 @@
-#ifndef ALLOCATION_ENGINE_H
-#define ALLOCATION_ENGINE_H
-
+#ifndef ALLOCATIONENGINE_H
+#define ALLOCATIONENGINE_H
 #include "Zone.h"
-
-class AllocationEngine
-{
+class AllocationEngine {
 public:
-    ParkingSlot* allocate(Zone* zones, int zoneCount, int preferredZone);
+    static ParkingSlot* findSlot(Zone* zones[], int zID);
 };
-
 #endif

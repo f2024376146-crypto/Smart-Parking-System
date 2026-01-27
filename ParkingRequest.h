@@ -1,32 +1,14 @@
-#ifndef PARKING_REQUEST_H
-#define PARKING_REQUEST_H
-
-enum RequestState
-{
-    REQUESTED,
-    ALLOCATED,
-    OCCUPIED,
-    RELEASED,
-    CANCELLED
-};
-
-class ParkingRequest
-{
-private:
-    int requestId;
-    int vehicleId;
-    int zoneId;
-    int requestTime;
-    RequestState state;
-
+#ifndef PARKINGREQUEST_H
+#define PARKINGREQUEST_H
+#include "Enums.h"
+class ParkingRequest {
 public:
+    int vehicleID, allocatedSlotID;
+    VehicleType vType;
+    double totalFee;
+    RequestState state;
     ParkingRequest();
-    ParkingRequest(int rid, int vid, int zid, int time);
-
-    bool transition(RequestState newState);
-    RequestState getState() const;
-
-    int getZoneId() const;
+    bool transitionTo(RequestState newState);
+    void calculateFee(bool isCrossZone);
 };
-
 #endif

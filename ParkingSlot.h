@@ -1,23 +1,9 @@
-#ifndef PARKING_SLOT_H
-#define PARKING_SLOT_H
-
-class ParkingSlot
-{
-private:
-    int slotId;
-    int zoneId;
-    bool isAvailable;
-
+#ifndef PARKINGSLOT_H
+#define PARKINGSLOT_H
+class ParkingSlot {
 public:
-    ParkingSlot();
-    ParkingSlot(int slotId, int zoneId);
-
-    int getSlotId() const;
-    int getZoneId() const;
-
-    bool available() const;
-    void occupy();
-    void release();
+    int slotID, zoneID;
+    bool isAvailable;
+    ParkingSlot(int sID = -1, int zID = -1);
 };
-
 #endif

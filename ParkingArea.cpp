@@ -1,39 +1,11 @@
 #include "ParkingArea.h"
-
-ParkingArea::ParkingArea(int zoneId, int c) : count(c)
-{
-    slots = new ParkingSlot[count];
-    for (int i = 0; i < count; i++)
-    {
-        slots[i] = ParkingSlot(i + 1, zoneId);
-    }
+ParkingArea::ParkingArea(int startID, int zID) {
+    for(int i=0; i<5; i++) slots[i] = new ParkingSlot(startID + i, zID);
 }
-
-ParkingArea::~ParkingArea()
-{
-    delete[] slots;
+ParkingArea::~ParkingArea() {
+    for(int i=0; i<5; i++) delete slots[i];
 }
-
-ParkingSlot* ParkingArea::getFirstFreeSlot()
-{
-    for (int i = 0; i < count; i++)
-    {
-        if (slots[i].available())
-            return &slots[i];
-    }
+ParkingSlot* ParkingArea::findAvailableSlot() {
+    for(int i=0; i<5; i++) if(slots[i]->isAvailable) return slots[i];
     return nullptr;
-}
-
-int ParkingArea::getFreeSlotCount() const
-{
-    int freeCount = 0;
-    for (int i = 0; i < count; i++)
-        if (slots[i].available())
-            freeCount++;
-    return freeCount;
-}
-
-int ParkingArea::getTotalSlots() const
-{
-    return count;
 }

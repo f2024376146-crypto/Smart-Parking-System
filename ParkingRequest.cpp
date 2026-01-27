@@ -1,39 +1,13 @@
 #include "ParkingRequest.h"
-
-ParkingRequest::ParkingRequest()
-{
-    state = REQUESTED;
-}
-
-ParkingRequest::ParkingRequest(int rid, int vid, int zid, int time)
-{
-    requestId = rid;
-    vehicleId = vid;
-    zoneId = zid;
-    requestTime = time;
-    state = REQUESTED;
-}
-
-bool ParkingRequest::transition(RequestState newState)
-{
-    if (
-        (state == REQUESTED && (newState == ALLOCATED || newState == CANCELLED)) ||
-        (state == ALLOCATED && (newState == OCCUPIED || newState == CANCELLED)) ||
-        (state == OCCUPIED && newState == RELEASED)
-       )
-    {
-        state = newState;
-        return true;
-    }
+ParkingRequest::ParkingRequest() : vehicleID(-1), allocatedSlotID(-1), totalFee(0.0), state(REQUESTED) {}
+bool ParkingRequest::transitionTo(RequestState newState) {
+    if (state == REQUESTED && newState == ALLOCATED) { state = newState; return true; }
+    if (state == ALLOCATED && newState == RELEASED) { state = newState; return true; }
     return false;
 }
-
-RequestState ParkingRequest::getState() const
-{
-    return state;
-}
-
-int ParkingRequest::getZoneId() const
-{
-    return zoneId;
+void ParkingRequest::calculateFee(bool isCrossZone) {
+    if(vType == BIKE) totalFee = 10.0; 
+    else if(vType == CAR) totalFee = 20.0; 
+    else totalFee = 50.0;
+    if(isCrossZone) totalFee += 15.0; // Penalty logic
 }

@@ -1,23 +1,11 @@
 #ifndef PARKINGAREA_H
 #define PARKINGAREA_H
-
 #include "ParkingSlot.h"
-
 class ParkingArea {
-private:
-    ParkingSlot* slots;
-    int count;
-
 public:
-    ParkingArea(int zoneId, int c);
+    ParkingSlot* slots[5]; // Each area manages 5 slots
+    ParkingArea(int startID, int zID);
     ~ParkingArea();
-
-    ParkingArea(const ParkingArea&) = delete;
-    ParkingArea& operator=(const ParkingArea&) = delete;
-
-    ParkingSlot* getFirstFreeSlot();
-    int getFreeSlotCount() const;
-    int getTotalSlots() const;
+    ParkingSlot* findAvailableSlot();
 };
-
 #endif

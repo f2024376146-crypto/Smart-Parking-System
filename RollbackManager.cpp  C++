@@ -1,51 +1,7 @@
 #include "RollbackManager.h"
-#include <iostream>
-
-using namespace std;
-
-RollbackManager::RollbackManager() : top(nullptr) {}
-
-
-RollbackManager::~RollbackManager() {
-    while (top != nullptr) {
-        RollNode* temp = top;
-        top = top->next;
-        delete temp;
-    }
+RollbackManager::RollbackManager() : top(-1) {}
+void RollbackManager::record(int r, int s, int z, RequestState st) {
+    if(top < 99) history[++top] = {r, s, z, st};
 }
-
-
-void RollbackManager::push(ParkingSlot* s, ParkingRequest* r, RequestState p) {
-    RollNode* newNode = new RollNode;
-    newNode->slot = s;
-    newNode->req = r;
-    newNode->prevState = p;
-    newNode->next = top;
-    top = newNode;
-}
-
-
-void RollbackManager::rollback(int k) {
-    if (top == nullptr) {
-        cout << "[ERROR] Nothing to rollback!" << endl;
-        return;
-    }
-
-    int count = 0;
-    while (k > 0 && top != nullptr) {
-
-        top->slot->release();
-
-        
-        top->req->transition(top->prevState);
-
-        
-        RollNode* temp = top;
-        top = top->next;
-        delete temp;
-
-        k--;
-        count++;
-    }
-    cout << "[SUCCESS] Rolled back " << count << " operations." << endl;
-}
+bool RollbackManager::isEmpty() { return top == -1; }
+RollbackAction RollbackManager::pop() { return history[top--]; }
